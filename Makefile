@@ -5,8 +5,11 @@ endif
 
 deps:
 	go mod tidy
-	cd frontend && npm i
+	cd web && npm i
 
 build:
-	cd frontend && npm run build  
+	cd web && npm run build  
 	go build .
+
+update:
+	cd web && npm update

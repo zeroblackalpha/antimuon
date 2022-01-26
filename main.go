@@ -10,11 +10,11 @@ import (
 	"github.com/webview/webview"
 )
 
-//go:embed frontend/public
+//go:embed web/public
 var frontend embed.FS
 
 func httpServer() *httptest.Server {
-	fsys, err := fs.Sub(frontend, "frontend/public")
+	fsys, err := fs.Sub(frontend, "web/public")
 	if err != nil {
 		panic(err)
 	}
