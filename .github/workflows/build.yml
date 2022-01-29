@@ -47,7 +47,11 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17.x
-      - uses: actions/cache@v2
+      - name: Install webview dependencies
+        run: sudo apt install libgtk-3-dev libwebkit2gtk-4.0-dev
+        if: ${{ matrix.os == ubuntu-latest }}
+      - name: Cache go modules
+        uses: actions/cache@v2
         with:
           # In order:
           # * Module download cache
