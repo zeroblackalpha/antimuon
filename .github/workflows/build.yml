@@ -9,9 +9,9 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-    defaults:
-      run:
-        working-directory: web
+    #defaults:
+    #  run:
+    #    working-directory: web
     strategy:
       matrix:
         os:
@@ -22,18 +22,45 @@ jobs:
           - x64
         # an extra run:
         # include:
-          #- os: windows-latest
-          #  architecture: x64
-    name: Build Frontend - ${{ matrix.architecture }} on ${{ matrix.os }}
+        #  - os: windows-latest
+        #    architecture: x64
+    name: Build - ${{ matrix.architecture }} on ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup node
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install node
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: 16.x
           architecture: ${{ matrix.architecture }}
           check-latest: true
           cache: 'npm'
           cache-dependency-path: 'web/package-lock.json'
-      - run: npm ci
+      - name: Install node dependencies
+        run: npm ci
+        working-directory: web
+      - name: Build frontend
+        run: npm run build
+        working-directory: web
       #- run: npm test
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17.x
+      - uses: actions/cache@v2
+        with:
+          # In order:
+          # * Module download cache
+          # * Build cache (Linux)
+          # * Build cache (Mac)
+          # * Build cache (Windows)
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+            ~/Library/Caches/go-build
+            %LocalAppData%\go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - name: Test
+        run: go test ./...
