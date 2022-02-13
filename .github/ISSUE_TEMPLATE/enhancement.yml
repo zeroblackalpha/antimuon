@@ -1,28 +1,28 @@
-name: Feature Request
+name: Enhancement
 description: Request a new feature or improvement
-title: "[Feature]: <title>"
-labels: ["feature", "triage"]
+title: "[Enhancement]: <title>"
+labels: ["enhancement", "triage"]
 assignees:
   - zeroblackalpha
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this feature request!
+        Thanks for taking the time to fill out this enhancement!
   - type: checkboxes
     attributes:
       label: Is there an existing issue for this?
-      description: Please search to see if an issue already exists for the feature request.
+      description: Please search to see if an issue already exists for the enhancement.
       options:
       - label: I have searched the existing issues
         required: true
   - type: textarea
-    id: feature-request
+    id: enhancement
     attributes:
       label: What is the feature or improvement?
       description: Also tell us, how will this make Antimuon better?
       placeholder: Tell us what and why!
-      value: "A feature occured!"
+      value: "A feature occurred!"
     validations:
       required: true
   - type: checkboxes
