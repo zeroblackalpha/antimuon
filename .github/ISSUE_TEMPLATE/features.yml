@@ -1,0 +1,35 @@
+name: Feature Request
+description: Request a new feature or improvement
+title: "[Feature]: <title>"
+labels: ["feature", "triage"]
+assignees:
+  - zeroblackalpha
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+  - type: checkboxes
+    attributes:
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the feature request.
+      options:
+      - label: I have searched the existing issues
+        required: true
+  - type: textarea
+    id: feature-request
+    attributes:
+      label: What is the feature or improvement?
+      description: Also tell us, how will this make Antimuon better?
+      placeholder: Tell us what and why!
+      value: "A feature occured!"
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
