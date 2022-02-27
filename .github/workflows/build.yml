@@ -49,7 +49,7 @@ jobs:
       - name: Test Backend
         run: go test ./...
       - name: Run Wails
-        run: wails build -platform windows/amd64,linux/amd64,darwin/amd64
+        run: wails build -platform windows/amd64,darwin/arm64,darwin/amd64
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
