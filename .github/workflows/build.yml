@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Install node
+      - name: Install Node
         uses: actions/setup-node@v2
         with:
           node-version: 16.x
@@ -21,7 +21,7 @@ jobs:
           check-latest: true
           cache: 'npm'
           cache-dependency-path: 'frontend/package-lock.json'
-      - name: Install node dependencies
+      - name: Install Node dependencies
         run: npm ci
         working-directory: frontend
       - name: Test frontend
@@ -32,9 +32,7 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17.x
-      - name: Install Wails
-        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
-      - name: Cache go modules
+      - name: Cache Go modules
         uses: actions/cache@v2
         with:
           # In order:
@@ -46,7 +44,9 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
-      - name: Test Backend
+      - name: Install Wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+      - name: Test backend
         run: go test ./...
       - name: Run Wails
         run: wails build -platform windows/amd64,darwin/arm64,darwin/amd64
