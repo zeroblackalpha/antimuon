@@ -1,0 +1,15 @@
+{
+	"fixed": {
+		"file_version": "1.0.0"
+	},
+	"info": {
+		"0000": {
+			"ProductVersion": "1.0.0",
+			"CompanyName": "antimuon",
+			"FileDescription": "antimuon",
+			"LegalCopyright": "Copyright.........",
+			"ProductName": "antimuon",
+			"Comments": "Built using Wails (https://wails.app)"
+		}
+	}
+}

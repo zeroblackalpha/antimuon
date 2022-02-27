@@ -2,36 +2,69 @@ package main
 
 import (
 	"embed"
-	"fmt"
-	"io/fs"
-	"net/http"
-	"net/http/httptest"
+	"log"
 
-	"github.com/webview/webview"
+	"github.com/wailsapp/wails/v2/pkg/options/mac"
+
+	"github.com/wailsapp/wails/v2"
+	"github.com/wailsapp/wails/v2/pkg/logger"
+	"github.com/wailsapp/wails/v2/pkg/options"
+	"github.com/wailsapp/wails/v2/pkg/options/windows"
 )
 
-//go:embed web/public
-var frontend embed.FS
+//go:embed frontend/dist/*
+var assets embed.FS
 
-func httpServer() *httptest.Server {
-	fsys, err := fs.Sub(frontend, "web/public")
-	if err != nil {
-		panic(err)
-	}
-
-	return httptest.NewServer(http.FileServer(http.FS(fsys)))
-}
+//go:embed build/appicon.png
+var icon []byte
 
 func main() {
-	srv := httpServer()
-	defer srv.Close()
+	// Create an instance of the app structure
+	app := NewApp()
 
-	url := fmt.Sprintf("%s/index.html", srv.URL)
-	debug := true
-	w := webview.New(debug)
-	defer w.Destroy()
-	w.SetTitle("Minimal webview example")
-	w.SetSize(800, 600, webview.HintNone)
-	w.Navigate(url)
-	w.Run()
+	// Create application with options
+	err := wails.Run(&options.App{
+		Title:             "antimuon",
+		Width:             720,
+		Height:            570,
+		MinWidth:          720,
+		MinHeight:         570,
+		MaxWidth:          0,
+		MaxHeight:         0,
+		DisableResize:     false,
+		Fullscreen:        false,
+		Frameless:         false,
+		StartHidden:       false,
+		HideWindowOnClose: false,
+		RGBA:              &options.RGBA{R: 33, G: 37, B: 43, A: 255},
+		Assets:            assets,
+		LogLevel:          logger.DEBUG,
+		OnStartup:         app.startup,
+		OnDomReady:        app.domReady,
+		OnShutdown:        app.shutdown,
+		Bind: []interface{}{
+			app,
+		},
+		// Windows platform specific options
+		Windows: &windows.Options{
+			WebviewIsTransparent: false,
+			WindowIsTranslucent:  false,
+			DisableWindowIcon:    false,
+		},
+		Mac: &mac.Options{
+			TitleBar:             mac.TitleBarHiddenInset(),
+			Appearance:           mac.NSAppearanceNameDarkAqua,
+			WebviewIsTransparent: true,
+			WindowIsTranslucent:  true,
+			About: &mac.AboutInfo{
+				Title:   "My Application",
+				Message: "© 2021 Me",
+				Icon:    icon,
+			},
+		},
+	})
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }
