@@ -49,7 +49,7 @@ jobs:
           # * Build cache (Linux)
           # * Build cache (Mac)
           # * Build cache (Windows)
-          path: path: |
+          path: |
             ~/go/pkg/mod
             ~/.cache/go-build
             ~/Library/Caches/go-build
